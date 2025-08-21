@@ -27,12 +27,12 @@ Ce repository contient une documentation détaillée de l'architecture OpenShift
 ## 📋 Table des matières
 
 ### 🏗️ [Architecture Globale](./docs/architecture-globale/)
-- [Diagramme interactif](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-globale/)
+- [Diagramme interactif](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-globale/architecture.mmd)
 - [Documentation détaillée](./docs/architecture-globale/README.md)
 - Composants, opérateurs et dépendances
 
 ### 🔐 [Architecture d'Authentification](./docs/architecture-auth/)
-- [Diagramme interactif](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/)
+- [Diagramme interactif](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/architecture.mmd)
 - [Documentation détaillée](./docs/architecture-auth/README.md)
 - OAuth, tokens et sécurisation des modèles
 
@@ -40,8 +40,8 @@ Ce repository contient une documentation détaillée de l'architecture OpenShift
 
 | Architecture | Diagramme interactif | Documentation |
 |--------------|---------------------|---------------|
-| **Globale** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-globale/) | [📖 Lire](./docs/architecture-globale/README.md) |
-| **Authentification** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/) | [📖 Lire](./docs/architecture-auth/README.md) |
+| **Globale** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-globale/architecture.mmd) | [📖 Lire](./docs/architecture-globale/README.md) |
+| **Authentification** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/architecture.mdd) | [📖 Lire](./docs/architecture-auth/README.md) |
 
 ## 📚 Documentation officielle Red Hat utilisée
 
