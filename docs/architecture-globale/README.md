@@ -4,9 +4,120 @@
 
 OpenShift AI 2.22 est construit sur une architecture modulaire utilisant un meta-operator qui déploie et gère tous les composants via un objet DataScienceCluster sur OpenShift Container Platform 4.19.
 
-## 📊 Diagramme interactif
+## 📊 Diagramme d'architecture
 
 👉 **[Voir le diagramme interactif complet](./index.html)**
+
+```mermaid
+graph TB
+    subgraph "🏗️ OpenShift Container Platform 4.19"
+        K8S[Kubernetes API Server<br/>etcd • CRI-O • Kubelet]
+        OCP[OpenShift Core<br/>OAuth • RBAC • Routes]
+        OLM[Operator Lifecycle Manager<br/>OperatorHub]
+    end
+    
+    subgraph "🎛️ Red Hat OpenShift AI Operator Meta-Operator"
+        DSC[DataScienceCluster DSC<br/>Gestion composants<br/>managementState: Managed/Removed]
+        DSCI[DSCInitialization DSCI<br/>Configuration globale<br/>Namespaces]
+    end
+    
+    subgraph "📁 Namespaces OpenShift AI"
+        NS1[redhat-ods-operator<br/>Opérateur principal]
+        NS2[redhat-ods-applications<br/>Composants applicatifs]
+        NS3[redhat-ods-monitoring<br/>Monitoring et métriques]
+        NS4[rhods-notebooks<br/>Workbenches utilisateur]
+    end
+    
+    subgraph "🧩 Composants Core"
+        DASH[Dashboard<br/>Interface web<br/>Gestion projets/utilisateurs<br/>managementState: Managed]
+        WB[Workbenches<br/>JupyterLab<br/>Notebooks personnalisés<br/>managementState: Managed]
+        MR[Model Registry<br/>Gestion modèles<br/>🆕 OAuth Proxy 2.22<br/>managementState: Managed]
+    end
+    
+    subgraph "🚀 Model Serving"
+        KS[KServe<br/>Single-Model Serving<br/>LLMs • GPU autoscaling<br/>Serverless/RawDeployment<br/>managementState: Managed]
+        MM[ModelMesh<br/>Multi-Model Serving<br/>Ressources partagées<br/>managementState: Managed]
+    end
+    
+    subgraph "⚙️ MLOps & Pipelines"
+        DSP[Data Science Pipelines<br/>Kubeflow Pipelines 2.5.0<br/>Workflows Docker<br/>managementState: Managed]
+        TA[TrustyAI<br/>Monitoring modèles<br/>Explicabilité IA<br/>managementState: Managed]
+    end
+    
+    subgraph "🖥️ Distributed Workloads"
+        CF[CodeFlare<br/>SDK Python<br/>Orchestration<br/>managementState: Managed]
+        RAY[Ray<br/>Calcul distribué<br/>Parallel processing<br/>managementState: Managed]
+        KUEUE[Kueue<br/>Gestion queues<br/>Ressources partagées<br/>managementState: Managed]
+        TO[Training Operator<br/>Entraînement ML<br/>Jobs distribués<br/>managementState: Managed]
+    end
+    
+    subgraph "🔗 Opérateurs Dépendants Externes"
+        SM[OpenShift Service Mesh<br/>Istio Control Plane<br/>Requis pour KServe Advanced]
+        SL[OpenShift Serverless<br/>Knative Serving/Eventing<br/>Requis pour KServe Serverless]
+        AUTH[Authorino Optionnel<br/>Authentification modèles<br/>Token validation]
+        GPU[NVIDIA GPU Operator<br/>Node Feature Discovery<br/>Support GPU]
+    end
+    
+    subgraph "💾 Stockage & Dépendances"
+        S3[Stockage S3-Compatible<br/>AWS S3 • MinIO • Ceph<br/>IBM Cloud Storage<br/>Requis pour modèles]
+    end
+    
+    %% Relations principales
+    K8S --> DSC
+    OCP --> DSC
+    OLM --> DSC
+    
+    DSC --> NS1
+    DSC --> NS2
+    DSC --> NS3
+    DSC --> NS4
+    
+    DSC --> DASH
+    DSC --> WB
+    DSC --> MR
+    DSC --> KS
+    DSC --> MM
+    DSC --> DSP
+    DSC --> TA
+    DSC --> CF
+    DSC --> RAY
+    DSC --> KUEUE
+    DSC --> TO
+    
+    %% Dépendances externes
+    KS --> SM
+    KS --> SL
+    KS --> AUTH
+    WB --> GPU
+    TO --> GPU
+    
+    %% Stockage
+    KS --> S3
+    MM --> S3
+    DSP --> S3
+    MR --> S3
+    
+    %% Styles
+    classDef platform fill:#2c3e50,stroke:#34495e,color:#fff
+    classDef operator fill:#e74c3c,stroke:#c0392b,color:#fff
+    classDef core fill:#3498db,stroke:#2980b9,color:#fff
+    classDef serving fill:#00b894,stroke:#00a085,color:#fff
+    classDef mlops fill:#9b59b6,stroke:#8e44ad,color:#fff
+    classDef workload fill:#f39c12,stroke:#e67e22,color:#fff
+    classDef dependency fill:#95a5a6,stroke:#7f8c8d,color:#fff
+    classDef storage fill:#27ae60,stroke:#229954,color:#fff
+    classDef namespace fill:#e8f4f8,stroke:#3498db,color:#2c3e50
+    
+    class K8S,OCP,OLM platform
+    class DSC,DSCI operator
+    class NS1,NS2,NS3,NS4 namespace
+    class DASH,WB,MR core
+    class KS,MM serving
+    class DSP,TA mlops
+    class CF,RAY,KUEUE,TO workload
+    class SM,SL,AUTH,GPU dependency
+    class S3 storage
+```
 
 ## 🎛️ Meta-Operator : Red Hat OpenShift AI Operator
 

@@ -4,9 +4,75 @@
 
 L'authentification dans OpenShift AI 2.22 s'appuie sur le serveur OAuth intégré d'OpenShift Container Platform 4.19, combiné avec des composants spécialisés pour sécuriser les services d'inférence des modèles ML.
 
-## 📊 Diagramme interactif
+## 📊 Diagramme d'architecture d'authentification
 
 👉 **[Voir le diagramme d'authentification interactif](./index.html)**
+
+```mermaid
+graph TD
+    subgraph "🌐 Couche Utilisateur & Interface"
+        A[Dashboard OpenShift AI<br/>Interface web<br/>Gestion projets/modèles]
+        B[CLI oc<br/>oc whoami -t<br/>oc login]
+        C[Applications externes<br/>Clients d'inférence<br/>API calls]
+    end
+    
+    subgraph "🔐 Couche OAuth OpenShift 4.19"
+        D[OAuth Server intégré<br/>Génération tokens JWT<br/>Durée: 24h par défaut<br/>/oauth/authorize]
+        E[Identity Providers<br/>LDAP, SSO, OIDC<br/>Sources d'identité]
+        F[OAuth Clients<br/>openshift-challenging<br/>openshift-browser<br/>console]
+    end
+    
+    subgraph "🛡️ Couche Autorisation & Sécurité"
+        G[Authorino Optionnel<br/>Fournisseur autorisation<br/>Auth KServe models]
+        H[RBAC Kubernetes<br/>Contrôle d'accès<br/>basé sur les rôles]
+        I[Service Accounts<br/>Comptes de service<br/>Tokens automatiques<br/>Namespace isolation]
+        J[OAuth Proxy 🆕<br/>Model Registry<br/>Nouveau dans 2.22<br/>Remplace Authorino]
+    end
+    
+    subgraph "🚀 Couche Service Mesh & Routage"
+        K[Service Mesh Istio<br/>Gestion trafic<br/>Sécurité TLS<br/>Observabilité]
+        L[Knative Serving<br/>Serverless platform<br/>Autoscaling<br/>Scale-to-zero]
+    end
+    
+    subgraph "🤖 Couche Serving des Modèles"
+        M[KServe Single-Model<br/>Modèles individuels<br/>LLMs, GPU autoscaling]
+        N[ModelMesh Multi-Model<br/>Modèles multiples<br/>Ressources partagées]
+    end
+    
+    %% Flux d'authentification
+    A --> D
+    B --> D
+    C --> D
+    
+    D --> E
+    E --> F
+    
+    D --> H
+    F --> I
+    I --> G
+    I --> J
+    
+    G --> K
+    J --> K
+    H --> K
+    K --> L
+    
+    L --> M
+    L --> N
+    
+    %% Styles
+    classDef userLayer fill:#74b9ff,stroke:#0984e3,color:#fff
+    classDef oauthLayer fill:#fd79a8,stroke:#e84393,color:#fff
+    classDef secLayer fill:#fdcb6e,stroke:#e17055,color:#fff
+    classDef meshLayer fill:#a29bfe,stroke:#6c5ce7,color:#fff
+    classDef modelLayer fill:#00b894,stroke:#00a085,color:#fff
+    
+    class A,B,C userLayer
+    class D,E,F oauthLayer
+    class G,H,I,J secLayer
+    class K,L meshLayer
+    class M,N modelLayer
+```
 
 ## 🏗️ Serveur OAuth OpenShift intégré
 
