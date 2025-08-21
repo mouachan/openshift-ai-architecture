@@ -41,7 +41,7 @@ Ce repository contient une documentation détaillée de l'architecture OpenShift
 | Architecture | Diagramme interactif | Documentation |
 |--------------|---------------------|---------------|
 | **Globale** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-globale/architecture.mmd) | [📖 Lire](./docs/architecture-globale/README.md) |
-| **Authentification** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/architecture.mdd) | [📖 Lire](./docs/architecture-auth/README.md) |
+| **Authentification** | [🔗 Voir](https://mouachan.github.io/openshift-ai-architecture/docs/architecture-auth/architecture.mmd) | [📖 Lire](./docs/architecture-auth/README.md) |
 
 ## 📚 Documentation officielle Red Hat utilisée
 
