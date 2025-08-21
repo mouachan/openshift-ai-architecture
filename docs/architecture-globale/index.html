@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Globale OpenShift AI 2.22</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #3498db, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .architecture-layer {
+            margin: 20px 0;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .platform-layer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+        .operator-layer {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        .namespace-layer {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        .core-layer {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+        .serving-layer {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+        .mlops-layer {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+        .workload-layer {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+        }
+        .dependency-layer {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+        .layer-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .layer-title::before {
+            content: attr(data-icon);
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .component {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .component:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .component h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+        .component p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .management-state {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            padding: 3px 8px;
+            font-size: 0.8em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .new-feature {
+            background: linear-gradient(45deg, #00b894, #00a085);
+            color: white;
+            border-radius: 5px;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #6c5ce7;
+            margin: 10px 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        .docs-links {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .docs-links h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .docs-links a {
+            color: #3498db;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .docs-links a:hover {
+            color: #2980b9;
+            background: #ecf0f1;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+        }
+        .back-link {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .back-link:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../" class="back-link">← Retour à l'accueil</a>
+        
+        <h1>🏗️ Architecture Globale OpenShift AI 2.22</h1>
+        
+        <div class="docs-links">
+            <h3>📚 Documentation officielle Red Hat utilisée</h3>
+            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html/installing_and_uninstalling_openshift_ai_cloud_service/architecture-of-openshift-ai_install" target="_blank">Architecture d'OpenShift AI Cloud Service</a>
+            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2-latest/html/installing_and_uninstalling_openshift_ai_self-managed/architecture-of-openshift-ai-self-managed_install" target="_blank">Architecture OpenShift AI Self-Managed</a>
+            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html/installing_and_uninstalling_openshift_ai_cloud_service/installing-and-deploying-openshift-ai_install" target="_blank">Installation et déploiement</a>
+            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html/release_notes/new-features-and-enhancements_relnotes" target="_blank">Nouvelles fonctionnalités 2.22</a>
+            <a href="./README.md" target="_blank">📖 Documentation détaillée Markdown</a>
+        </div>
+
+        <!-- Platform Layer -->
+        <div class="architecture-layer platform-layer">
+            <div class="layer-title" data-icon="🏗️">OpenShift Container Platform 4.19</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>Kubernetes Core</h3>
+                    <p>API Server, etcd, Scheduler</p>
+                    <p>CRI-O, Kubelet, kube-proxy</p>
+                    <p>Red Hat Enterprise Linux CoreOS</p>
+                </div>
+                <div class="component">
+                    <h3>OpenShift Core</h3>
+                    <p>OAuth Server intégré</p>
+                    <p>RBAC et sécurité</p>
+                    <p>Routes et ingress</p>
+                </div>
+                <div class="component">
+                    <h3>Operator Lifecycle Manager</h3>
+                    <p>OperatorHub</p>
+                    <p>Gestion des opérateurs</p>
+                    <p>Cycle de vie automatisé</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <!-- Operator Layer -->
+        <div class="architecture-layer operator-layer">
+            <div class="layer-title" data-icon="🎛️">Red Hat OpenShift AI Operator (Meta-Operator)</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>DataScienceCluster (DSC)</h3>
+                    <p>Configuration des composants</p>
+                    <p>managementState: Managed/Removed</p>
+                    <p>Gestion du cycle de vie</p>
+                    <div class="management-state">API: datasciencecluster.opendatahub.io/v1</div>
+                </div>
+                <div class="component">
+                    <h3>DSCInitialization (DSCI)</h3>
+                    <p>Configuration globale</p>
+                    <p>Gestion des namespaces</p>
+                    <p>Service Mesh et dépendances</p>
+                    <div class="management-state">Configuration initiale</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <!-- Namespaces Layer -->
+        <div class="architecture-layer namespace-layer">
+            <div class="layer-title" data-icon="📁">Namespaces OpenShift AI</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>redhat-ods-operator</h3>
+                    <p>Opérateur principal</p>
+                    <p>Contrôleurs des composants</p>
+                </div>
+                <div class="component">
+                    <h3>redhat-ods-applications</h3>
+                    <p>Dashboard et composants</p>
+                    <p>Applications principales</p>
+                </div>
+                <div class="component">
+                    <h3>redhat-ods-monitoring</h3>
+                    <p>Prometheus et monitoring</p>
+                    <p>Métriques et alertes</p>
+                </div>
+                <div class="component">
+                    <h3>rhods-notebooks</h3>
+                    <p>Workbenches utilisateur</p>
+                    <p>Environnements JupyterLab</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <!-- Core Components Layer -->
+        <div class="architecture-layer core-layer">
+            <div class="layer-title" data-icon="🧩">Composants Core OpenShift AI</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>Dashboard</h3>
+                    <p>Interface web utilisateur</p>
+                    <p>Gestion projets et utilisateurs</p>
+                    <p>Configuration images et profils GPU</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>Workbenches</h3>
+                    <p>Environnements JupyterLab</p>
+                    <p>Notebooks personnalisés</p>
+                    <p>Images de base configurables</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>Model Registry</h3>
+                    <p>Gestion des modèles ML</p>
+                    <p>Versions et métadonnées</p>
+                    <p>OAuth Proxy intégré</p>
+                    <div class="new-feature">🆕 2.22</div>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Serving Layer -->
+        <div class="architecture-layer serving-layer">
+            <div class="layer-title" data-icon="🚀">Model Serving Components</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>KServe</h3>
+                    <p>Single-Model Serving</p>
+                    <p>LLMs et modèles volumineux</p>
+                    <p>GPU autoscaling</p>
+                    <p>Modes: Serverless/RawDeployment</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>ModelMesh</h3>
+                    <p>Multi-Model Serving</p>
+                    <p>Ressources partagées</p>
+                    <p>Modèles petits/moyens</p>
+                    <p>Optimisation des coûts</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MLOps Layer -->
+        <div class="architecture-layer mlops-layer">
+            <div class="layer-title" data-icon="⚙️">MLOps & Pipeline Components</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>Data Science Pipelines</h3>
+                    <p>Kubeflow Pipelines 2.5.0</p>
+                    <p>Workflows automatisés</p>
+                    <p>Conteneurs Docker</p>
+                    <div class="new-feature">🆕 2.5.0</div>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>TrustyAI</h3>
+                    <p>Monitoring des modèles</p>
+                    <p>Explicabilité IA</p>
+                    <p>Détection de biais</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distributed Workloads Layer -->
+        <div class="architecture-layer workload-layer">
+            <div class="layer-title" data-icon="🖥️">Distributed Workloads Components</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>CodeFlare</h3>
+                    <p>SDK Python</p>
+                    <p>Orchestration distribuée</p>
+                    <p>Interface simplifiée</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>Ray</h3>
+                    <p>Calcul distribué</p>
+                    <p>Parallel processing</p>
+                    <p>Mise à l'échelle automatique</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>Kueue</h3>
+                    <p>Gestion des queues</p>
+                    <p>Ressources partagées</p>
+                    <p>Planification des jobs</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+                <div class="component">
+                    <h3>Training Operator</h3>
+                    <p>Entraînement ML distribué</p>
+                    <p>Jobs parallèles</p>
+                    <p>Support multi-GPU</p>
+                    <div class="management-state">managementState: Managed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dependencies Layer -->
+        <div class="architecture-layer dependency-layer">
+            <div class="layer-title" data-icon="🔗">Opérateurs Dépendants & Stockage</div>
+            <div class="components-grid">
+                <div class="component">
+                    <h3>OpenShift Service Mesh</h3>
+                    <p>Istio Control Plane</p>
+                    <p>Requis pour KServe Advanced</p>
+                    <p>Gestion du trafic sécurisé</p>
+                </div>
+                <div class="component">
+                    <h3>OpenShift Serverless</h3>
+                    <p>Knative Serving/Eventing</p>
+                    <p>Requis pour KServe Serverless</p>
+                    <p>Autoscaling serverless</p>
+                </div>
+                <div class="component">
+                    <h3>Authorino (Optionnel)</h3>
+                    <p>Authentification modèles</p>
+                    <p>Validation des tokens</p>
+                    <p>Sécurisation endpoints</p>
+                </div>
+                <div class="component">
+                    <h3>Stockage S3-Compatible</h3>
+                    <p>AWS S3, MinIO, Ceph</p>
+                    <p>IBM Cloud Storage</p>
+                    <p>Requis pour modèles et artifacts</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin: 30px 0;">
+            <h3 style="color: #2c3e50; margin-top: 0;">🔧 Configuration managementState</h3>
+            <ul style="color: #34495e;">
+                <li><strong>Managed</strong> : L'opérateur gère activement le composant, l'installe, et essaie de le maintenir actif</li>
+                <li><strong>Removed</strong> : L'opérateur gère activement le composant mais ne l'installe pas. Si déjà installé, l'opérateur essaiera de le supprimer</li>
+            </ul>
+        </div>
+
+        <div style="background: #d5f4e6; border-radius: 10px; padding: 20px; margin: 30px 0; border-left: 5px solid #27ae60;">
+            <h3 style="color: #2c3e50; margin-top: 0;">🆕 Principales nouveautés OpenShift AI 2.22</h3>
+            <ul style="color: #2c3e50;">
+                <li><strong>Model Registry OAuth Proxy</strong> : Plus besoin d'Authorino, Serverless et Service Mesh pour le Model Registry</li>
+                <li><strong>Kubeflow Pipelines 2.5.0</strong> : Mise à niveau des Data Science Pipelines</li>
+                <li><strong>Opérateur amélioré</strong> : Maintenant avec 3 répliques pour une meilleure résilience</li>
+                <li><strong>Migration automatique</strong> : Instances existantes migrées automatiquement vers OAuth proxy</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
