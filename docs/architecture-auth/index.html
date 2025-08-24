@@ -95,6 +95,16 @@
             font-family: 'Courier New', monospace;
             overflow-x: auto;
         }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -165,10 +175,10 @@
 
         <div class="docs-links">
             <h3>📚 Documentation officielle Red Hat utilisée</h3>
-            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html-single/serving_models/index" target="_blank">Serving Models OpenShift AI</a>
+            <a href="https://docs.openshift.com/container-platform/4.19/openshift_images/using-images/using-s2i-builds/using-s2i-builds.html" target="_blank">Serving Models OpenShift AI</a>
             <a href="https://docs.openshift.com/container-platform/4.19/authentication/understanding-authentication.html" target="_blank">Understanding Authentication OpenShift 4.19</a>
             <a href="https://docs.openshift.com/container-platform/4.19/authentication/managing-oauth-access-tokens.html" target="_blank">Managing OAuth Access Tokens</a>
-            <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html/installing_and_uninstalling_openshift_ai_cloud_service/installing-the-single-model-serving-platform_component-install" target="_blank">Adding Authorization Provider</a>
+            <a href="https://docs.openshift.com/container-platform/4.19/authentication/identity_providers/configuring-ldap-identity-provider.html" target="_blank">Adding Authorization Provider</a>
             <a href="./README.md" target="_blank">📖 Documentation détaillée Markdown</a>
         </div>
 
@@ -333,7 +343,7 @@
         </div>
 
         <div class="code-block">
-# Exemples de commandes d'authentification
+            <pre><code># Exemples de commandes d'authentification
 
 # Récupération du token utilisateur
 oc whoami -t
@@ -357,7 +367,7 @@ metadata:
   name: cluster
 spec:
   tokenConfig:
-    accessTokenMaxAgeSeconds: 172800  # 48 heures
+    accessTokenMaxAgeSeconds: 172800  # 48 heures</code></pre>
         </div>
 
         <div class="info-box">
@@ -395,7 +405,7 @@ spec:
         <div style="background: #e8f4f8; border-radius: 10px; padding: 20px; margin: 30px 0; border-left: 5px solid #3498db;">
             <h3 style="color: #2c3e50; margin-top: 0;">🛠️ Guide de dépannage authentification</h3>
             <div class="code-block">
-# Vérifier la validité d'un token
+                <pre><code># Vérifier la validité d'un token
 oc auth can-i get pods --token=&lt;your-token&gt;
 
 # Tester l'endpoint d'inférence
@@ -408,7 +418,7 @@ oc get useroauthaccesstokens
 oc logs -n istio-system deployment/istiod | grep -i auth
 
 # Supprimer un token expiré
-oc delete useroauthaccesstoken &lt;token-name&gt;
+oc delete useroauthaccesstoken &lt;token-name&gt;</code></pre>
             </div>
         </div>
     </div>
