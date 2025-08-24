@@ -342,10 +342,10 @@ oc logs -n istio-system deployment/istiod | grep -i auth
 ## 📚 Documentation officielle
 
 ### OpenShift Container Platform 4.19
-- [Understanding Authentication](https://docs.openshift.com/container-platform/4.19/authentication/understanding-authentication.html)
-- [Configuring OAuth server](https://docs.openshift.com/container-platform/4.19/authentication/configuring-internal-oauth.html)
-- [Managing OAuth tokens](https://docs.openshift.com/container-platform/4.19/authentication/managing-oauth-access-tokens.html)
-- [Configuring OAuth clients](https://docs.openshift.com/container-platform/4.19/authentication/configuring-oauth-clients.html)
+- [Understanding Authentication](https://docs.redhat.com/fr/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#understanding-authentication)
+- [Configuring OAuth server](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#configuring-internal-oauth)
+- [Managing OAuth tokens](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#managing-oauth-access-tokens)
+- [Configuring OAuth clients](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#configuring-oauth-clients)
 
 ### OpenShift AI 2.22
 - [Serving Models Authentication](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html-single/serving_models/index)
@@ -353,7 +353,7 @@ oc logs -n istio-system deployment/istiod | grep -i auth
 - [Model Registry OAuth Proxy](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_cloud_service/1/html/release_notes/new-features-and-enhancements_relnotes)
 
 ### Service Mesh et sécurité
-- [OpenShift Service Mesh](https://docs.openshift.com/container-platform/4.19/service_mesh/v2x/ossm-about.html)
+- [OpenShift Service Mesh](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/service_mesh/index#ossm-about)
 - [Authorino documentation](https://docs.kuadrant.io/authorino/)
 
 ## 🔧 Exemples de configuration

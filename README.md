@@ -168,8 +168,8 @@ graph TD
 
 ### OpenShift Container Platform 4.19
 - [Architecture OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/architecture/architecture)
-- [Understanding Authentication](https://docs.openshift.com/container-platform/4.19/authentication/understanding-authentication.html)
-- [Managing OAuth tokens](https://docs.openshift.com/container-platform/4.19/authentication/managing-oauth-access-tokens.html)
+- [Understanding Authentication](https://docs.redhat.com/fr/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#understanding-authentication)
+- [Managing OAuth tokens](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/authentication_and_authorization/index#managing-oauth-access-tokens)
 
 ## 🧩 Composants principaux
 
